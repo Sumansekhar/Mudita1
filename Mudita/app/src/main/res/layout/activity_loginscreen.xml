@@ -179,22 +179,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/fblogo" />
 
-    <ImageView
-        android:id="@+id/googlelogo"
-        android:layout_width="38dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="238dp"
-        android:layout_marginLeft="238dp"
-        android:layout_marginTop="560dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginRight="80dp"
-        android:contentDescription="@string/googlelogo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/googlelogo" />
-
     <Button
         android:id="@+id/loginbutton"
         android:layout_width="75dp"
@@ -271,5 +255,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googlesignin"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="170dp"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="90dp"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="@+id/button2"
+        app:layout_constraintStart_toEndOf="@+id/fblogo"
+        app:layout_constraintTop_toBottomOf="@+id/passwordenter" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

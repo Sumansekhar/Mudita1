@@ -57,6 +57,13 @@ public class Registerscreen extends AppCompatActivity {
 
             }
         });
+        Sign_in.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent (Registerscreen.this,Loginscreen.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void Registeruser(String name, String email, String password, String age) {

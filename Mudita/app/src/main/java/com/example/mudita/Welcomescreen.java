@@ -22,7 +22,7 @@ public class Welcomescreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(Welcomescreen.this,Loginscreen.class);
                 startActivity(intent);
-               // finish();
+                finish();
             }
         });
         register.setOnClickListener(new View.OnClickListener() {
@@ -30,7 +30,8 @@ public class Welcomescreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent =new Intent(Welcomescreen.this,Registerscreen.class);
                 startActivity(intent);
-               // finish();
+
+                finish();
             }
         });
 

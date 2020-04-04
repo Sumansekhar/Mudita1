@@ -5,51 +5,112 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthCredential;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
 
 public class Loginscreen extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private SignInButton signInButton;
-    private FirebaseAuth auth;
-    private Button SignoutButton;
+    private LoginButton loginButton;
+    private FirebaseAuth auth,muth;
+    private CallbackManager mcallbackManager;
+    private Button SignoutButton,Registerbutton;
     private int RC_SIGN_IN=9001;
-    private String Tag="activity_loginscreen";
+    private AccessTokenTracker accessTokenTracker;
+    private static final String TAG="LOGINTAG";
+    private  FirebaseAuth.AuthStateListener authStateListener;
+    private static int flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loginscreen);
+        Registerbutton=findViewById(R.id.button2);
         signInButton=findViewById(R.id.googlesignin);
-        auth= FirebaseAuth.getInstance();
+        auth=FirebaseAuth.getInstance();
         SignoutButton=findViewById(R.id.loginbutton);
+
+        //GOOGLE
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account!=null)
+        {   signInButton.setVisibility(View.INVISIBLE);
+            FirebaseGoogleAuth(account);}
+        //FACEBOOK
 
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        loginButton=findViewById(R.id.facebooksignin);
+        mcallbackManager =CallbackManager.Factory.create();
 
+        loginButton.registerCallback(mcallbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d(TAG,"ONSUCCESS "+loginResult);
+                        //flag=4;
+                      handlefacebooktoken(loginResult.getAccessToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Log.d(TAG,"ONCANCEL ");
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                       Log.d(TAG,"ONERROR");
+                    }
+                });
+         //FACEBOOK
+        authStateListener=new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    updateUIFB(user);
+                }
+                else
+                {updateUIFB(null);}
+            }
+        };
+        accessTokenTracker =new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                if(currentAccessToken==null)
+                {auth.signOut();}
+            }
+        };
+
+        //GOOGLE
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,13 +125,44 @@ public class Loginscreen extends AppCompatActivity {
                 SignoutButton.setVisibility(View.INVISIBLE);
             }
         });
+        Registerbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Loginscreen.this,Registerscreen.class);
+                startActivity(intent);
+            }
+        });
 
 
 
     }
+    //FACEBOOK FIREBASE AUTHENTICATION
+    private  void handlefacebooktoken(AccessToken token)
+    {
+        AuthCredential authCredential= FacebookAuthProvider.getCredential(token.getToken());
+        auth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful())
+                {   Toast.makeText(Loginscreen.this,"Login Successful",Toast.LENGTH_SHORT).show();
+                    FirebaseUser user=auth.getCurrentUser();
+                    updateUIFB(user);
+
+                }
+                else
+                {
+                    Toast.makeText(Loginscreen.this,"Login UnSuccessful",Toast.LENGTH_SHORT).show();
+                    updateUIFB(null);
+                }
+
+            }
+        });
+    }
 
     private void onsignin() {
+        //flag=3;
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     /*@Override
@@ -88,6 +180,8 @@ public class Loginscreen extends AppCompatActivity {
 
    // @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+       // Log.d(TAG,"flag="+flag);
+        {mcallbackManager.onActivityResult(requestCode, resultCode, data);}
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -102,7 +196,7 @@ public class Loginscreen extends AppCompatActivity {
                 Toast.makeText(Loginscreen.this,"Signed in Unsuccessful",Toast.LENGTH_SHORT).show();
                 FirebaseGoogleAuth(null);
 
-            }
+           }
         }
     }
 
@@ -120,6 +214,7 @@ public class Loginscreen extends AppCompatActivity {
         }
     }*/
 
+    //GOOLGLE FIREBASE AUTHENTICATION
     private void FirebaseGoogleAuth(GoogleSignInAccount acct)
     {
         AuthCredential authCredential= GoogleAuthProvider.getCredential(acct.getIdToken(),null);
@@ -141,16 +236,43 @@ public class Loginscreen extends AppCompatActivity {
         });
 
     }
+
+    //GOOGLE
     private void updateUI(FirebaseUser fuser)
     { SignoutButton.setVisibility(View.VISIBLE);
      GoogleSignInAccount account= GoogleSignIn.getLastSignedInAccount(getApplicationContext());
      if(account!=null)
      { Intent intent=new Intent(Loginscreen.this,Mainscreen1.class);
                startActivity(intent);
+               finish();
                }
 
     }
-  /*  public void onsignout()
+    //FACEBOOK
+    private void updateUIFB(FirebaseUser fuser)
+    {
+        if(fuser!=null)
+        {Intent intent=new Intent(Loginscreen.this,Mainscreen1.class);
+            startActivity(intent);
+            finish();
+
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(flag==4)
+        {auth.addAuthStateListener(authStateListener);}
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(flag==4&&authStateListener!=null)
+        {auth.removeAuthStateListener(authStateListener);}
+    }
+    /*  public void onsignout()
     {
 
     }

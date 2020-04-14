@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -43,13 +44,14 @@ public class Loginscreen extends AppCompatActivity {
     private LoginButton loginButton;
     private FirebaseAuth auth,muth;
     private CallbackManager mcallbackManager;
-    private Button SignoutButton,Registerbutton;
+    private Button Registerbutton,MainLoginButton;
     private int RC_SIGN_IN=9001;
     private AccessTokenTracker accessTokenTracker;
     private static final String TAG="LOGINTAG";
     private  FirebaseAuth.AuthStateListener authStateListener;
     private static int flag;
-
+    private EditText Email,Password;
+   String Email_txt,Password_txt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,10 @@ public class Loginscreen extends AppCompatActivity {
         Registerbutton=findViewById(R.id.button2);
         signInButton=findViewById(R.id.googlesignin);
         auth=FirebaseAuth.getInstance();
-        SignoutButton=findViewById(R.id.loginbutton);
+        MainLoginButton=findViewById(R.id.loginbutton);
+        Email=findViewById(R.id.emailenter);
+        Password=findViewById(R.id.passwordenter);
+
 
         //GOOGLE
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
@@ -91,7 +96,7 @@ public class Loginscreen extends AppCompatActivity {
                     }
                 });
          //FACEBOOK
-        authStateListener=new FirebaseAuth.AuthStateListener() {
+      /*  authStateListener=new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -108,7 +113,7 @@ public class Loginscreen extends AppCompatActivity {
                 if(currentAccessToken==null)
                 {auth.signOut();}
             }
-        };
+        };*/
 
         //GOOGLE
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -117,14 +122,43 @@ public class Loginscreen extends AppCompatActivity {
                 onsignin();
             }
         });
-        SignoutButton.setOnClickListener(new View.OnClickListener() {
+
+        //Made this Button for using Login button as Signout button for temporary purpose
+
+       /*SignoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mGoogleSignInClient.signOut();
                 Toast.makeText(Loginscreen.this,"Your Are Signed Out",Toast.LENGTH_SHORT).show();
                 SignoutButton.setVisibility(View.INVISIBLE);
             }
+        });*/
+
+        MainLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Email_txt=Email.getText().toString();
+                Password_txt=Password.getText().toString();
+                auth.signInWithEmailAndPassword(Email_txt,Password_txt).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful())
+                        {Intent intent=new Intent(Loginscreen.this,Mainscreen1.class);
+                         startActivity(intent);
+                         finish();
+
+                        }
+
+                        else
+                        {String msg =task.getException().getMessage();
+                        Toast.makeText(Loginscreen.this,""+msg,Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+            }
         });
+
         Registerbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,7 +273,7 @@ public class Loginscreen extends AppCompatActivity {
 
     //GOOGLE
     private void updateUI(FirebaseUser fuser)
-    { SignoutButton.setVisibility(View.VISIBLE);
+    { /*SignoutButton.setVisibility(View.VISIBLE);*/
      GoogleSignInAccount account= GoogleSignIn.getLastSignedInAccount(getApplicationContext());
      if(account!=null)
      { Intent intent=new Intent(Loginscreen.this,Mainscreen1.class);
@@ -259,7 +293,7 @@ public class Loginscreen extends AppCompatActivity {
         }
     }
 
-    @Override
+   /* @Override
     protected void onStart() {
         super.onStart();
         if(flag==4)
@@ -271,7 +305,7 @@ public class Loginscreen extends AppCompatActivity {
         super.onStop();
         if(flag==4&&authStateListener!=null)
         {auth.removeAuthStateListener(authStateListener);}
-    }
+    }*/
     /*  public void onsignout()
     {
 

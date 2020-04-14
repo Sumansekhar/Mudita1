@@ -74,8 +74,11 @@ public class Registerscreen extends AppCompatActivity {
                 {Intent intent=new Intent(Registerscreen.this,Mainscreen1.class);
                 startActivity(intent);
                 finish();}
-                else
-                {Toast.makeText(Registerscreen.this,"Registration Failed",Toast.LENGTH_SHORT).show();}
+                else {
+                String str=task.getException().getMessage();
+                    Toast.makeText(Registerscreen.this,""+str,Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });

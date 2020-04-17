@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -27,6 +28,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthCredential;
@@ -45,6 +47,7 @@ public class Loginscreen extends AppCompatActivity {
     private FirebaseAuth auth,muth;
     private CallbackManager mcallbackManager;
     private Button Registerbutton,MainLoginButton;
+    private ImageView fbbutton,googlebutton;
     private int RC_SIGN_IN=9001;
     private AccessTokenTracker accessTokenTracker;
     private static final String TAG="LOGINTAG";
@@ -62,20 +65,30 @@ public class Loginscreen extends AppCompatActivity {
         MainLoginButton=findViewById(R.id.loginbutton);
         Email=findViewById(R.id.emailenter);
         Password=findViewById(R.id.passwordenter);
+        fbbutton=findViewById(R.id.facebooklogo);
+        googlebutton=findViewById(R.id.googlelogo);
+
+
 
 
         //GOOGLE
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account!=null)
-        {   signInButton.setVisibility(View.INVISIBLE);
-            FirebaseGoogleAuth(account);}
+       /* if(account!=null)
+        { FirebaseGoogleAuth(account);}*/
         //FACEBOOK
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         loginButton=findViewById(R.id.facebooksignin);
         mcallbackManager =CallbackManager.Factory.create();
+        fbbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginButton.performClick();
+
+            }
+        });
 
         loginButton.registerCallback(mcallbackManager, new FacebookCallback<LoginResult>() {
                     @Override
@@ -116,6 +129,12 @@ public class Loginscreen extends AppCompatActivity {
         };*/
 
         //GOOGLE
+        googlebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signInButton.performClick();
+            }
+        });
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -280,6 +299,7 @@ public class Loginscreen extends AppCompatActivity {
                startActivity(intent);
                finish();
                }
+
 
     }
     //FACEBOOK

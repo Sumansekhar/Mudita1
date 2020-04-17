@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
@@ -35,6 +36,7 @@ public class Mainscreen1 extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth firebaseAuth;
 
+
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
@@ -44,7 +46,6 @@ public class Mainscreen1 extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
-
         //NO NEED TO USE SEPARATE SIGN OUT CHECK SINCE WE CAN SIGN OUT USING FIREBASE
 
       /*  //FACEBOOK
@@ -67,6 +68,8 @@ public class Mainscreen1 extends AppCompatActivity {
                     finish();
 
                 }
+
+
 
               /*  if(account!=null) {
                     Toast.makeText(Mainscreen1.this, "Your Are Signed Out", Toast.LENGTH_SHORT).show();

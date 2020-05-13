@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import java.io.Serializable;
 public class Splashscreen extends AppCompatActivity {
       private  GoogleSignInClient mGoogleSignInClient;
         private FirebaseAuth firebaseAuth;
+        private String usernamestr,profileurl,TAG="fbgoogle";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,13 +66,25 @@ public class Splashscreen extends AppCompatActivity {
         //USING FIREBASE TO CHECK LOGGED IN USER
         firebaseAuth = FirebaseAuth.getInstance();
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        final FirebaseUser user = firebaseAuth.getCurrentUser();
 
         if (user !=null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     Intent intent=new Intent(Splashscreen.this,Mainscreen1.class);
+                    if(user.getDisplayName()!=null)
+                    {   usernamestr=user.getDisplayName();
+                        intent.putExtra("username",usernamestr);
+                        Log.d(TAG,"Username"+usernamestr);
+                    }
+                    else {intent.putExtra("username","noname");}
+                    if(user.getPhotoUrl()!=null)
+                    { profileurl=user.getPhotoUrl().toString();
+                        intent.putExtra("photourl",profileurl);
+                        Log.d(TAG,"photourl: "+profileurl);;
+                    }
+                    else {intent.putExtra("photourl","nophoto");}
                     startActivity(intent);
                     finish();
                 }

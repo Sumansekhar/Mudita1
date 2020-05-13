@@ -47,14 +47,16 @@ public class Loginscreen extends AppCompatActivity {
     private FirebaseAuth auth,muth;
     private CallbackManager mcallbackManager;
     private Button Registerbutton,MainLoginButton;
-    private ImageView fbbutton,googlebutton;
+    private ImageView fbbutton,googlebutton,profilepic;
     private int RC_SIGN_IN=9001;
     private AccessTokenTracker accessTokenTracker;
     private static final String TAG="LOGINTAG";
     private  FirebaseAuth.AuthStateListener authStateListener;
     private static int flag;
     private EditText Email,Password;
-   String Email_txt,Password_txt;
+    private static final String TAG1="facebook";
+    private static final String TAG2="google";
+   String Email_txt,Password_txt,usernamestr,photourl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,6 +165,8 @@ public class Loginscreen extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful())
                         {Intent intent=new Intent(Loginscreen.this,Mainscreen1.class);
+                        intent.putExtra("username","noname");
+                        intent.putExtra("photourl","nophoto");
                          startActivity(intent);
                          finish();
 
@@ -295,18 +299,40 @@ public class Loginscreen extends AppCompatActivity {
     { /*SignoutButton.setVisibility(View.VISIBLE);*/
      GoogleSignInAccount account= GoogleSignIn.getLastSignedInAccount(getApplicationContext());
      if(account!=null)
-     { Intent intent=new Intent(Loginscreen.this,Mainscreen1.class);
+     {    Intent intent=new Intent(Loginscreen.this,Mainscreen1.class);
+         if(fuser.getDisplayName()!=null)
+     { usernamestr=fuser.getDisplayName();
+         intent.putExtra("username",usernamestr);
+         Log.d(TAG2,"username: "+usernamestr);;
+     }
+         else { intent.putExtra("username","noname");}
+
+         if(fuser.getPhotoUrl()!=null)
+         {photourl=fuser.getPhotoUrl().toString();
+             intent.putExtra("photourl",photourl);
+             Log.d(TAG2,"photourl: "+photourl);;}
+         else { intent.putExtra("photourl","nophoto");}
+
                startActivity(intent);
                finish();
-               }
-
-
+     }
     }
     //FACEBOOK
     private void updateUIFB(FirebaseUser fuser)
     {
         if(fuser!=null)
-        {Intent intent=new Intent(Loginscreen.this,Mainscreen1.class);
+        {  Intent intent=new Intent(Loginscreen.this,Mainscreen1.class);
+            usernamestr=fuser.getDisplayName();
+        if(fuser.getPhotoUrl()!=null)
+        { photourl=fuser.getPhotoUrl().toString();
+            intent.putExtra("photourl",photourl);
+            Log.d(TAG1,"photourl: "+photourl);;
+        }
+        else {intent.putExtra("photourl","nophoto");}
+        if(usernamestr!=null)
+        { intent.putExtra("username",usernamestr);
+        Log.d(TAG1,"username: "+usernamestr);}
+
             startActivity(intent);
             finish();
 

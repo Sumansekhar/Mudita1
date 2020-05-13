@@ -197,8 +197,6 @@
                         android:layout_height="60dp"
                         android:layout_marginLeft="30dp"
                         android:layout_marginTop="15dp"
-
-
                         android:src="@drawable/usericon" />
 
                     <TextView
@@ -210,7 +208,7 @@
                         android:layout_marginLeft="75dp"
                         android:layout_marginBottom="38dp"
                         android:fontFamily="@font/vidaloka"
-                        android:text="Suman Sekhar Deka"
+                        android:text="Username Trail"
                         android:textSize="14dp"
                         android:textStyle="bold" />
 
@@ -320,7 +318,7 @@
                     android:id="@+id/tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="9dp"
 
                     android:fontFamily="@font/cambo"
@@ -333,9 +331,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
-                   android:layout_marginTop="5dp"
+                  android:layout_marginTop="5dp"
                     android:layout_marginLeft="20dp"
-                    android:text="Google sign-in is automatically configured on your connected iOS and web apps. To set up Google sign-in for" />
+                    android:fontFamily="@font/acme"
+                   android:text="assam is a nice state"
+                    android:textColor="#B8B19C"
+                    android:gravity="center">
+
+                </TextView>
 
             </LinearLayout>
 

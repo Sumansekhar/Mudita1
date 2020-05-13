@@ -2,12 +2,14 @@ package com.example.mudita;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.mudita.ui.home.HomeFragment;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -21,6 +23,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -35,6 +39,8 @@ public class Mainscreen1 extends AppCompatActivity {
     private GoogleSignInAccount account;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth firebaseAuth;
+    private String usernamestr,profileurl;
+    private static final String TAG="facebook";
 
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -46,6 +52,22 @@ public class Mainscreen1 extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
+        Intent intent1=getIntent();
+       usernamestr=intent1.getStringExtra("username");
+       profileurl=intent1.getStringExtra("photourl");
+        Log.d(TAG,"MainScreen1 Username "+usernamestr);
+        Log.d(TAG,"MainScreen1 profileUrl "+profileurl);
+        FragmentManager fm=getSupportFragmentManager();
+        FragmentTransaction t=fm.beginTransaction();
+        HomeFragment homeFragment=new HomeFragment();
+        Bundle bundle=new Bundle();
+       bundle.putString("username",usernamestr);
+       bundle.putString("photourl",profileurl);
+       homeFragment.setArguments(bundle);
+       t.add(R.id.nav_host_fragment,homeFragment);
+       t.commit();
+        /*replace(R.id.container,homeFragment).commit();*/
+
         //NO NEED TO USE SEPARATE SIGN OUT CHECK SINCE WE CAN SIGN OUT USING FIREBASE
 
       /*  //FACEBOOK

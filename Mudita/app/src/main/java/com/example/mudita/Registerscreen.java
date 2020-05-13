@@ -22,6 +22,7 @@ public class Registerscreen extends AppCompatActivity {
     private Button Register,Sign_in;
     private ImageView Male,Female;
     private FirebaseAuth auth;
+    private String txt_name,txt_email,txt_password,txt_age;
 
 
     @Override
@@ -40,10 +41,10 @@ public class Registerscreen extends AppCompatActivity {
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String txt_name = Name.getText().toString();
-                String txt_email = Email.getText().toString();
-                String txt_password = Password.getText().toString();
-                String txt_age = Age.getText().toString();
+                 txt_name = Name.getText().toString();
+                 txt_email = Email.getText().toString();
+                 txt_password = Password.getText().toString();
+                 txt_age = Age.getText().toString();
                 if ((TextUtils.isEmpty(txt_name)) || (TextUtils.isEmpty(txt_email)) || (TextUtils.isEmpty(txt_password)) || (TextUtils.isEmpty(txt_age)))
                 {
                     Toast.makeText(Registerscreen.this, "Empty Credentials!", Toast.LENGTH_SHORT).show();
@@ -66,12 +67,14 @@ public class Registerscreen extends AppCompatActivity {
         });
     }
 
-    private void Registeruser(String name, String email, String password, String age) {
+    private void Registeruser(final String name, String email, String password, String age) {
         auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(Registerscreen.this,new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful())
                 {Intent intent=new Intent(Registerscreen.this,Mainscreen1.class);
+                   intent.putExtra("username",txt_name);
+                   intent.putExtra("photourl","nophoto");
                 startActivity(intent);
                 finish();}
                 else {

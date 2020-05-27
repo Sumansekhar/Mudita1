@@ -2,10 +2,14 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/acme</item>
+        <item>@font/adamina</item>
         <item>@font/alike_angular</item>
+        <item>@font/anton</item>
         <item>@font/atma_medium</item>
         <item>@font/cambo</item>
+        <item>@font/chela_one</item>
         <item>@font/fanwood_text_italic</item>
+        <item>@font/lilita_one</item>
         <item>@font/vidaloka</item>
     </array>
 </resources>

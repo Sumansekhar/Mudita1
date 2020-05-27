@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.mudita.Mainscreen1;
 import com.example.mudita.R;
 import com.example.mudita.Welcomescreen;
+import com.example.mudita.missedact;
 import com.example.mudita.statistics;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,7 +34,7 @@ import java.util.Random;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    private ImageView tempsignout,profilepic,Trail;
+    private ImageView tempsignout,profilepic,Trail,missed;
     private FirebaseAuth firebaseAuth;
     private LoginManager loginManager;
     private GoogleSignInClient mGoogleSignInClient;
@@ -126,6 +127,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
+        missed=(ImageView)root.findViewById(R.id.missed);
         Trail=(ImageView)root.findViewById(R.id.stats);
         Trail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +141,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
                 //textView.setText(s);
+            }
+        });
+        missed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent3=new Intent(getActivity(), missedact.class);
+                startActivity(intent3);
             }
         });
 

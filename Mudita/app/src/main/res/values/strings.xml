@@ -31,6 +31,8 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="facebook_app_id">687325862038410</string>
     <string name="fb_login_protocol_scheme">fb687325862038410</string>
+    <string name="medicinemissed">AZITHROM 500</string>
+    <string name="numbermissed">Missed 4 times</string>
 
 
     <string name="home_second">Home Second</string>

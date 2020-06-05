@@ -46,6 +46,7 @@ public class Myadapter extends ArrayAdapter<String> {
           gradientDrawable.setShape(GradientDrawable.RECTANGLE);
           gradientDrawable.setCornerRadius(50);
 
+
           if(position%4==0)
           {gradientDrawable.setColor(Color.parseColor("#4AACDD"));
            helper.setBackground(gradientDrawable);}

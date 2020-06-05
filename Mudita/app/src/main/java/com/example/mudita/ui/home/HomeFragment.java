@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.mudita.Mainscreen1;
 import com.example.mudita.R;
 import com.example.mudita.Welcomescreen;
+import com.example.mudita.addactivity;
 import com.example.mudita.missedact;
 import com.example.mudita.statistics;
 import com.facebook.login.LoginManager;
@@ -34,7 +35,7 @@ import java.util.Random;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    private ImageView tempsignout,profilepic,Trail,missed;
+    private ImageView tempsignout,profilepic,Trail,missed,add;
     private FirebaseAuth firebaseAuth;
     private LoginManager loginManager;
     private GoogleSignInClient mGoogleSignInClient;
@@ -102,6 +103,18 @@ public class HomeFragment extends Fragment {
         //Health Tips
         texttips=root.findViewById(R.id.puratip);
         texttips.setText(getResources().getIdentifier(tipstr,"string",getActivity().getPackageName()));
+
+        //add button oncicklistener
+        add=(ImageView) root.findViewById(R.id.add);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentadd = new Intent(getActivity(), addactivity.class);
+                startActivity(intentadd);
+            }
+        });
+
+
          //Temp Signout
         tempsignout=(ImageView)root.findViewById(R.id.card3);
         tempsignout.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +141,8 @@ public class HomeFragment extends Fragment {
             }
         });
         missed=(ImageView)root.findViewById(R.id.missed);
+
+        //Statistics onclicklistener
         Trail=(ImageView)root.findViewById(R.id.stats);
         Trail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +158,8 @@ public class HomeFragment extends Fragment {
                 //textView.setText(s);
             }
         });
+
+        //missed onclicklistener
         missed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -11,22 +11,21 @@
     android:background="#252029"
    >
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+          >
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginTop="30dp"
+                android:layout_height="160dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
-                android:layout_marginBottom="20dp"
+
                 android:orientation="horizontal"
                 android:id="@+id/rlstats1"
                 android:padding="10dp"
@@ -66,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/adamina"
                     android:text="69"
+                   android:layout_marginTop="15dp"
                    android:layout_centerHorizontal="true"
                    android:textColor="#D6C5AB"
                    android:layout_centerVertical="true"
@@ -73,27 +73,51 @@
                     android:textSize="45dp">
 
                 </TextView>
+
+
             </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+            android:gravity="center_horizontal"
+                android:layout_marginBottom="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/anton"
+                    android:text="STATISTICS"
+                    android:textSize="35dp"></TextView>
+
+
+
+            </LinearLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="35dp"
                 android:layout_marginLeft="35dp"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="60dp">
 
                 <ListView
                     android:id="@+id/listviewstats"
                     android:layout_width="match_parent"
                     android:divider="@android:color/transparent"
                     android:dividerHeight="15dp"
-                    android:layout_height="450dp">
+                    android:layout_height="420dp">
 
                 </ListView>
             </LinearLayout>
+            </ScrollView>
 
 
         </LinearLayout>
-    </ScrollView>
+
 
 
 </LinearLayout>

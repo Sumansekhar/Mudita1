@@ -11,8 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".missedact"></activity>
-        <activity android:name=".statistics"></activity>
+        <activity android:name=".addactivity"></activity>
+        <activity android:name=".missedact" />
+        <activity android:name=".statistics" />
         <activity
             android:name=".Mainscreen1"
             android:label="@string/title_activity_mainscreen1"
